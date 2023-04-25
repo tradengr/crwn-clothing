@@ -38,6 +38,8 @@ export default function SignIn() {
     window.open('http://localhost:3000/auth/google', '_self');
   }
 
+  
+
   return (
     <div className='signin-container'>
       <h2>Already have an account?</h2>

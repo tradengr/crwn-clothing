@@ -10,7 +10,6 @@ authRouter.get('/google', passport.authenticate('google', {
 authRouter.get('/google/callback', passport.authenticate('google', {
   failureRedirect: 'http://localhost:5173/signin',
   successRedirect: 'http://localhost:5173/',
-  session: false,
 }));
 
 authRouter.post('/signin', passport.authenticate('local'), httpSubmitSignIn);

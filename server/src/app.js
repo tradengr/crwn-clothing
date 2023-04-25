@@ -2,11 +2,13 @@ const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
 const passport = require('passport');
-const flash = require('connect-flash');
+// const flash = require('connect-flash');
 
 const { passportConfig } = require('./utils/passport.utils');
-const authRouter =  require('./routers/auth/auth.router');
 const signUpRouter = require('./routers/signUp/signUp.router');
+const authRouter =  require('./routers/auth/auth.router');
+const userRouter = require('./routers/user/user.router');
+const signOutRouter = require('./routers/signout/signout.router');
 
 const app = express();
 
@@ -23,11 +25,13 @@ app.use(session({
   cookie: { maxAge: 24 * 60 * 90 * 1000 }
 }));
 passportConfig(passport);
-app.use(flash());
+// app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/auth', authRouter);
 app.use('/signup', signUpRouter);
+app.use('/auth', authRouter);
+app.use('/user', userRouter);
+app.use('/signout', signOutRouter);
 
 module.exports = app;
