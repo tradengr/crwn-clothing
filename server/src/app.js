@@ -5,6 +5,7 @@ const passport = require('passport');
 
 const { passportConfig } = require('./utils/passport.utils');
 const authRouter =  require('./routers/auth/auth.router');
+const signUpRouter = require('./routers/signUp/signUp.router');
 
 const app = express();
 
@@ -25,5 +26,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/auth', authRouter);
+app.use('/signup', signUpRouter);
 
 module.exports = app;
