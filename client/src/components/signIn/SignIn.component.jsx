@@ -27,6 +27,10 @@ export default function SignIn() {
     const user = { email, password };
 
     const res = await httpSubmitSignIn(user);
+    if (res === undefined) {
+      alert('Invalid Username or Password')
+      return;
+    }
     if (res.status === 200) window.location.assign('http://localhost:5173/');
   }
 
@@ -55,10 +59,11 @@ export default function SignIn() {
           name='password'
           value={password}
         />
-        <Button type='submit'>Sign In</Button>
+        <div className='buttons-container'>
+          <Button type='submit'>Sign In</Button>
+          <GoogleButton type='button' onClick={handleGoogleSignin}>Google Sign In</GoogleButton>
+        </div>
       </form>
-      <br/>
-      <GoogleButton onClick={handleGoogleSignin}>Sign In with Google</GoogleButton>
     </div>
   )
 }

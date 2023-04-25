@@ -46,7 +46,7 @@ function passportConfig(passport) {
     try {
       const user = await Users.findById(id);
       const basicUserInfo = {
-        displayName: user.displayName,
+        displayName: user.displayName, 
         email: user.email,
       }
       return done(null, basicUserInfo);
