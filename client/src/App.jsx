@@ -1,8 +1,17 @@
-import CategoryList from './components/categoryList/categoryList.component';
+import { Routes, Route } from 'react-router-dom'
+
+import Navbar from './routes/navbar/Navbar.component'
+import Home from './routes/home/Home.component'
+import Auth from './routes/auth/Auth.component'
 
 function App() {
   return(
-    <CategoryList />
+    <Routes>
+      <Route path='/' element={<Navbar />}>
+        <Route index element={<Home/>} />
+        <Route path='/auth' element={<Auth/>} />
+      </Route>
+    </Routes>
   )
 }
 
