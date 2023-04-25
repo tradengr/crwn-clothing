@@ -22,7 +22,30 @@ async function httpSubmitSignIn(user) {
   }
 }
 
+async function httpGetUser() {
+  try {
+    return await axios.get(`${API_URL}/user`, {
+      withCredentials: true
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function httpSignOutUser() {
+  try {
+    const res = await axios.delete(`${API_URL}/signout`, {
+      withCredentials: true
+    });
+    if (res.status === 200) window.location.reload();
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 export {
   httpSubmitSignUp,
   httpSubmitSignIn,
+  httpGetUser,
+  httpSignOutUser,
 }

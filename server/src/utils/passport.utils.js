@@ -14,16 +14,19 @@ function passportConfig(passport) {
 
   async function verifyGoogle(accessToken, refreshToken, profile, done) {
     const email = profile.emails[0].value;
-    const displayName = profile.displayName;
+    const displayname = profile.displayName;
+    const googleId = profile.id;
     try {
       const currentUser = await Users.findOneAndUpdate(
-        { email },
-        { displayName, email },
+        { email: email }, 
+        { displayName: displayname,
+          email: email,
+        }, 
         { upsert: true }
       );
-      return done(null, currentUser);
+      done(null, currentUser);
     } catch (err) {
-      return done(err);
+      done(err);
     }
   }
 
@@ -39,8 +42,8 @@ function passportConfig(passport) {
     }
   }
 
-  passport.use(new GoogleStrategy(googleConfig, verifyGoogle));
   passport.use(new LocalStrategy({ usernameField: 'email'}, verifyLocal));
+  passport.use(new GoogleStrategy(googleConfig, verifyGoogle));
   passport.serializeUser((user, done) => done(null, user.id));
   passport.deserializeUser(async(id, done) => {
     try {
