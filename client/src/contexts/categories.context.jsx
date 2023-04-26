@@ -1,14 +1,18 @@
 import { createContext, useEffect, useState } from "react";
 
-import SHOP_DATA from '../shop-data.json';
+import { httpGetCategories } from "../api/serverAPI";
 
 export const CategoriesContext = createContext({
-  categories: []
+  categories: {}
 });
 
 export const CategoriesProvider = ({ children }) => {
-  const [categories, setCategories] = useState(SHOP_DATA);
+  const [categories, setCategories] = useState({});
   const value = {categories, setCategories}
+
+  useEffect(() => {
+    httpGetCategories().then(res => setCategories(res.data));
+  }, []);
 
   return (
     <CategoriesContext.Provider value={value}>

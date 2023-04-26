@@ -2,6 +2,16 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3000';
 
+async function httpGetCategories() {
+  try {
+    return await axios.get(`${API_URL}/categories`, {
+      withCredentials: true
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 async function httpSubmitSignUp(user) {
   try {
     return await axios.post(`${API_URL}/signup`, user, {
@@ -44,6 +54,7 @@ async function httpSignOutUser() {
 }
 
 export {
+  httpGetCategories,
   httpSubmitSignUp,
   httpSubmitSignIn,
   httpGetUser,
