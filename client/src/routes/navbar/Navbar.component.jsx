@@ -15,8 +15,6 @@ export default function Navbar() {
   const { currentUser } = useContext(UserContext);
   const { isCartOpen } = useContext(CartContext);
 
-  console.log(currentUser)
-
   return (
     <>
       <div className="navigation">
