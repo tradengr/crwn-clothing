@@ -8,13 +8,14 @@ import { store } from './redux/store.js';
 import { persistor } from './redux/store';
 
 import App from './App.jsx'
+import Spinner from './components/spinner/Spinner.component.jsx';
 
 import './index.scss'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={<Spinner/>} persistor={persistor}>
         <BrowserRouter>
           <App />
         </BrowserRouter>

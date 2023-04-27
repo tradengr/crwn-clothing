@@ -5,14 +5,16 @@ import { useDispatch } from 'react-redux';
 import CategoriesPreview from '../categoriesPreview/CategoriesPreview.component';
 import Category from '../category/Category.component';
 
-import { httpGetCategories } from '../../api/serverAPI';
-import { setCategories } from '../../redux/categories/categories.action';
+import { fetchCategoriesAsync } from '../../redux/categories/categories.action';
+// import { httpGetCategories } from '../../api/serverAPI';
+// import { setCategories } from '../../redux/categories/categories.action';
 
 export default function Shop() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    httpGetCategories().then(res => dispatch(setCategories(res.data)));
+    dispatch(fetchCategoriesAsync());
+    // httpGetCategories().then(res => dispatch(setCategories(res.data)));
   }, []);
 
   return (
