@@ -9,7 +9,7 @@ import Shop from './routes/shop/Shop.component'
 import Checkout from './routes/checkout/Checkout.component'
 
 import { httpGetUser } from './api/serverAPI'
-import { setCurrentUser } from './redux/user/user.action'
+import { setCurrentUser } from './redux/user/user.slice'
 
 function App() {
   const dispatch = useDispatch();

@@ -6,7 +6,7 @@ import CategoriesPreview from '../categoriesPreview/CategoriesPreview.component'
 import Category from '../category/Category.component';
 
 import { httpGetCategories } from '../../api/serverAPI';
-import { setCategories } from '../../redux/categories/categories.action';
+import { setCategories } from '../../redux/categories/categories.slice';
 
 export default function Shop() {
   const dispatch = useDispatch();
