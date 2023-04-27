@@ -1,15 +1,17 @@
+import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
-import Navbar from './routes/navbar/Navbar.component'
-import Home from './routes/home/Home.component'
-import Auth from './routes/auth/Auth.component'
-import Shop from './routes/shop/Shop.component'
-import Checkout from './routes/checkout/Checkout.component'
+import Spinner from './components/spinner/spinner.component'
 
 import { httpGetUser } from './api/serverAPI'
 import { setCurrentUser } from './redux/user/user.slice'
+
+const Navbar = lazy(() => import('./routes/navbar/Navbar.component'));
+const Home = lazy(() => import('./routes/home/Home.component'));
+const Auth = lazy(() => import('./routes/auth/Auth.component'));
+const Shop = lazy(() => import('./routes/shop/Shop.component'));
+const Checkout = lazy(() => import('./routes/checkout/Checkout.component'));
 
 function App() {
   const dispatch = useDispatch();
@@ -19,14 +21,16 @@ function App() {
   }, [])
 
   return(
-    <Routes>
-      <Route path='/' element={<Navbar/>}>
-        <Route index element={<Home/>}/>
-        <Route path='/auth' element={<Auth/>}/>
-        <Route path='/shop/*' element={<Shop/>}/>
-        <Route path='/checkout' element={<Checkout/>}/>
-      </Route>
-    </Routes>
+    <Suspense fallback={<Spinner/>}>
+      <Routes>
+        <Route path='/' element={<Navbar/>}>
+          <Route index element={<Home/>}/>
+          <Route path='/auth' element={<Auth/>}/>
+          <Route path='/shop/*' element={<Shop/>}/>
+          <Route path='/checkout' element={<Checkout/>}/>
+        </Route>
+      </Routes>
+    </Suspense>
   )
 }
 

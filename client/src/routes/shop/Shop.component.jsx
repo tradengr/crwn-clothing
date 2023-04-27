@@ -1,11 +1,13 @@
+import { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import CategoriesPreview from '../categoriesPreview/CategoriesPreview.component';
-import Category from '../category/Category.component';
+import Spinner from '../../components/spinner/spinner.component';
 
 import { getCategories } from '../../redux/categories/categories.slice';
+
+const CategoriesPreview = lazy(() => import('../categoriesPreview/CategoriesPreview.component'));
+const Category = lazy(() => import('../category/Category.component'));
 
 export default function Shop() {
   const dispatch = useDispatch();
@@ -15,9 +17,11 @@ export default function Shop() {
   }, []);
 
   return (
-    <Routes>
-      <Route index element={<CategoriesPreview/>}/>
-      <Route path=':category' element={<Category/>}/>
-    </Routes>
+    <Suspense fallback={<Spinner/>}>
+      <Routes>
+        <Route index element={<CategoriesPreview/>}/>
+        <Route path=':category' element={<Category/>}/>
+      </Routes>
+    </Suspense>
   )
 }
