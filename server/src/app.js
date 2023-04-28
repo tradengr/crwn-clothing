@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
@@ -37,4 +38,20 @@ app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/signout', signOutRouter);
 
+// -----------------------------------------------------
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+app.post('/stripe-payment', async (req, res) => {
+  const { amount } = req.body;
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount,
+      currency: 'usd',
+      payment_method_types: [ 'card' ],
+    });
+    return res.status(200).json(paymentIntent);
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+});
+// -----------------------------------------------------
 module.exports = app;

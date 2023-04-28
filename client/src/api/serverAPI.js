@@ -53,10 +53,21 @@ async function httpSignOutUser() {
   }
 }
 
+async function httpPostStripePayment(amount) {
+  try {
+    return await axios.post(`${API_URL}/stripe-payment`, amount, { 
+      withCredentials: true 
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
 export {
   httpGetCategories,
   httpSubmitSignUp,
   httpSubmitSignIn,
   httpGetUser,
   httpSignOutUser,
+  httpPostStripePayment,
 }

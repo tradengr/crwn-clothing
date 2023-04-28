@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import Spinner from '../spinner/spinner.component';
+
 export const Button = styled.button`
   min-width: 165px;
   width: auto;
@@ -46,4 +48,9 @@ export const GoogleButton = styled(Button)`
     background-color: #357ae8;
     border: none
   }
+`;
+
+export const ButtonSpinner = styled(Spinner)`
+  width: 30px;
+  height: 30px;
 `;
