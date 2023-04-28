@@ -51,6 +51,6 @@ export const GoogleButton = styled(Button)`
 `;
 
 export const ButtonSpinner = styled(Spinner)`
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
 `;

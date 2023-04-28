@@ -48,7 +48,7 @@ export default function PaymentForm() {
       <form className='form-container' onSubmit={paymentHandler}>
         <h2>Credit Card Payment</h2>
         <CardElement />
-        <InvertedButton>
+        <InvertedButton className='payment-button' disabled={isProcessingPayment}>
           {isProcessingPayment ? <ButtonSpinner/> : 'Pay Now'}
         </InvertedButton>
       </form>
