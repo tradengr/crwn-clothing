@@ -1,7 +1,8 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
-import { InvertedButton } from '../button/Button.component';
+import { InvertedButton, ButtonSpinner } from '../button/Button.component';
 
 import { httpPostStripePayment } from '../../api/serverAPI';
 import { selectCartTotal } from '../../redux/cart/cart.selector';
@@ -14,24 +15,28 @@ export default function PaymentForm() {
   const elements = useElements();
   const cartTotal = useSelector(selectCartTotal);
   const currentUser = useSelector(selectCurrentUser);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
   const paymentHandler = async (event) => {
     event.preventDefault();
 
     if (!stripe || !elements) return;
 
-    const res = await httpPostStripePayment({amount: cartTotal});
+    setIsProcessingPayment(true);
+
+    const res = await httpPostStripePayment({amount: cartTotal * 100});
     const clientSecret = res.data.client_secret;
-    // console.log(res.data.client_secret);
 
     const paymentResult = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
-          name: currentUser.displayName
+          name: currentUser ? currentUser.displayName : 'Guest'
         }
       }
     });
+
+    setIsProcessingPayment(false);
 
     if (paymentResult.error) alert(paymentResult.error);
     else if (paymentResult.paymentIntent.status === 'succeeded') alert('Payment Successful');
@@ -43,7 +48,9 @@ export default function PaymentForm() {
       <form className='form-container' onSubmit={paymentHandler}>
         <h2>Credit Card Payment</h2>
         <CardElement />
-        <InvertedButton>Pay Now</InvertedButton>
+        <InvertedButton>
+          {isProcessingPayment ? <ButtonSpinner/> : 'Pay Now'}
+        </InvertedButton>
       </form>
     </div>
   )

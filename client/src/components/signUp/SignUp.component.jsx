@@ -37,7 +37,7 @@ export default function SignUp() {
     };
 
     const res = await httpSubmitSignUp(user);
-    if (res.status === 200) window.location.reload();
+    if (res.status === 201) window.location.reload();
   }
  
   return (
