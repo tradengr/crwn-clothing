@@ -1,30 +1,106 @@
-// import { USER_ACTION_TYPES } from "./user.types";
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const INITIAL_STATE = {
+import { httpGetUser, httpSubmitSignIn } from '../../api/serverAPI';
+
+const initialState = {
   currentUser: null,
+  isLoading: false,
+  error: null,
 };
+
+export const userSignIn = createAsyncThunk(
+  'user/userSignIn',
+  async (user) => {
+    return await httpSubmitSignIn(user);
+  }
+)
+
+export const setCurrentUser = createAsyncThunk(
+  'user/setCurrentUser',
+  async () => {
+    const res = await httpGetUser();
+    const user = res.data;
+    return user;
+  }
+)
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState: INITIAL_STATE,
-  reducers: {
-    setCurrentUser(state, action) {
-      state.currentUser = action.payload;
-    }
+  initialState,
+  extraReducers: (builder) => {
+    // const {pending, fulfilled, rejected} = setCurrentUser;
+    builder
+      .addCase(setCurrentUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(setCurrentUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentUser = action.payload;
+      })
+      .addCase(setCurrentUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(userSignIn.fulfilled, (state, action) => {
+        if (action.payload === undefined) alert('Invalid Username or Password')
+        else if (action.payload.status === 200) window.location.assign('http://localhost:5173/')
+      })
   }
 });
 
 export const userReducer = userSlice.reducer;
-export const { setCurrentUser } = userSlice.actions;
 
-// export const userReducer = (state=INITIAL_STATE, action) => {
-//   const {type, payload} = action;
 
-//   switch(type) {
-//     case USER_ACTION_TYPES.SET_CURRENT_USER:
-//       return {...state, currentUser: payload}
-//     default:
-//       return state;
+
+
+
+
+
+// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+// import { httpGetUser, httpSubmitSignIn } from '../../api/serverAPI';
+
+// const initialState = {
+//   currentUser: null,
+//   isLoading: false,
+//   error: null,
+// };
+
+// // export const userSignIn = createAsyncThunk(
+// //   'user/userSignIn',
+// //   async (user) => {
+// //     const res = await httpSubmitSignIn(user);
+// //     const 
+// //   }
+// // )
+
+// export const setCurrentUser = createAsyncThunk(
+//   'user/setCurrentUser',
+//   async () => {
+//     const res = await httpGetUser();
+//     const user = res.data;
+//     return user;
 //   }
-// }
+// )
+
+// export const userSlice = createSlice({
+//   name: 'user',
+//   initialState,
+//   extraReducers: (builder) => {
+//     const {pending, fulfilled, rejected} = setCurrentUser;
+//     builder
+//       .addCase(pending, (state) => {
+//         state.isLoading = true;
+//       })
+//       .addCase(fulfilled, (state, action) => {
+//         state.isLoading = false;
+//         state.currentUser = action.payload;
+//       })
+//       .addCase(rejected, (state, action) => {
+//         state.isLoading = false;
+//         state.error = action.payload;
+//       })
+//   }
+// });
+
+// export const userReducer = userSlice.reducer;

@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux'
 
 import Spinner from './components/spinner/spinner.component'
 
-import { httpGetUser } from './api/serverAPI'
 import { setCurrentUser } from './redux/user/user.slice'
 
 const Navbar = lazy(() => import('./routes/navbar/Navbar.component'));
@@ -15,9 +14,9 @@ const Checkout = lazy(() => import('./routes/checkout/Checkout.component'));
 
 function App() {
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
-    httpGetUser().then(res => dispatch(setCurrentUser(res.data)));
+    dispatch(setCurrentUser());
   }, [])
 
   return(

@@ -5,6 +5,9 @@ import { Button, GoogleButton } from '../button/Button.component';
 
 import { httpSubmitSignIn } from '../../api/serverAPI';
 
+import { userSignIn } from '../../redux/user/user.slice';
+import { useDispatch } from 'react-redux';
+
 import './SignIn.styles.scss';
 
 const defaultFormFields = {
@@ -13,6 +16,8 @@ const defaultFormFields = {
 };
 
 export default function SignIn() {
+  const dispatch = useDispatch();
+
   const [ formFields, setFormFields ] = useState(defaultFormFields);
   const { email, password } = formFields;
 
@@ -25,13 +30,8 @@ export default function SignIn() {
     event.preventDefault();
 
     const user = { email, password };
-
-    const res = await httpSubmitSignIn(user);
-    if (res === undefined) {
-      alert('Invalid Username or Password')
-      return;
-    }
-    if (res.status === 200) window.location.assign('http://localhost:5173/');
+    
+    dispatch(userSignIn(user));
   }
 
   const handleGoogleSignin = () => {

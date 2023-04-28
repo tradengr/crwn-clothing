@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { httpGetCategories } from '../../api/serverAPI';
 
-const INITIAL_STATE = {
+const initialState   = {
   categoriesObj: {},
   isLoading: false,
   error: null,
@@ -19,17 +19,18 @@ export const getCategories = createAsyncThunk(
 
 export const categoriesSlice = createSlice({
   name: 'categories',
-  initialState: INITIAL_STATE,
+  initialState,
   extraReducers: (builder) => {
+    const {pending, fulfilled, rejected} = getCategories;
     builder
-      .addCase(getCategories.pending, (state) => {
+      .addCase(pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getCategories.fulfilled, (state, action) => {
+      .addCase(fulfilled, (state, action) => {
         state.isLoading = false;
         state.categoriesObj = action.payload;
       })
-      .addCase(getCategories.rejected, (state, action) => {
+      .addCase(rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
