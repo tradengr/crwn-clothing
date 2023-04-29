@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 import { 
   httpGetUser, 
@@ -7,7 +7,18 @@ import {
   httpSignOutUser, 
 } from '../../api/serverAPI';
 
-const initialState = {
+type CurentUser = {
+  displayName: string;
+  email: string;
+}
+
+type UserState = {
+  currentUser: CurentUser | null;
+  isLoading: boolean;
+  error: Error | null | unknown;
+}
+
+const initialState: UserState = {
   currentUser: null,
   isLoading: false,
   error: null,
@@ -51,12 +62,13 @@ export const userSignOut = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'user',
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getCurrentUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getCurrentUser.fulfilled, (state, action) => {
+      .addCase(getCurrentUser.fulfilled, (state, action: PayloadAction<CurentUser>) => {
         state.isLoading = false;
         state.currentUser = action.payload;
       })

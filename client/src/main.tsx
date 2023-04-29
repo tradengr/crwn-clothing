@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
 
 import { store } from './redux/store.js';
-import { persistor } from './redux/store';
+import { persistor } from './redux/store.js';
 import { stripePromise } from './utils/stripe.js';
 
 import App from './App.jsx'

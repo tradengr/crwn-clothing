@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect';
 
-const selectCategoriesReducer = (state) => state.categories;
+import { CategoriesState } from './categories.slice';
+
+import { RootState } from '../rootReducer';
+
+const selectCategoriesReducer = (state): CategoriesState => state.categories;
 
 export const selectCategoriesObj = createSelector(
   [selectCategoriesReducer],
