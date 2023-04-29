@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import Spinner from '../spinner/spinner.component';
+import { SpinnerContainer } from '../spinner/spinner.styles';
 
 export const Button = styled.button`
   min-width: 165px;
@@ -50,7 +50,7 @@ export const GoogleButton = styled(Button)`
   }
 `;
 
-export const ButtonSpinner = styled(Spinner)`
-  width: 20px;
-  height: 20px;
+export const ButtonSpinner = styled(SpinnerContainer)`
+  width: 30px;
+  height: 30px;
 `;

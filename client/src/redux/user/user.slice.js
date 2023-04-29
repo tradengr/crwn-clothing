@@ -1,6 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { httpGetUser, httpSubmitSignIn } from '../../api/serverAPI';
+import { 
+  httpGetUser, 
+  httpSubmitSignIn, 
+  httpSubmitSignUp,
+  httpSignOutUser, 
+} from '../../api/serverAPI';
 
 const initialState = {
   currentUser: null,
@@ -8,15 +13,8 @@ const initialState = {
   error: null,
 };
 
-export const userSignIn = createAsyncThunk(
-  'user/userSignIn',
-  async (user) => {
-    return await httpSubmitSignIn(user);
-  }
-)
-
-export const setCurrentUser = createAsyncThunk(
-  'user/setCurrentUser',
+export const getCurrentUser = createAsyncThunk(
+  'user/getCurrentUser',
   async () => {
     const res = await httpGetUser();
     const user = res.data;
@@ -24,83 +22,93 @@ export const setCurrentUser = createAsyncThunk(
   }
 )
 
+export const userEmailSignIn = createAsyncThunk(
+  'user/userEmailSignIn',
+  async (user) => {
+    return await httpSubmitSignIn(user);
+  }
+)
+
+export const userGoogleSignIn = createAsyncThunk(
+  'user/userGoogleSignIn',
+  () => window.open('http://localhost:3000/auth/google', '_self')
+)
+
+export const userSignUp = createAsyncThunk(
+  'user/userSignUp',
+  async (user) => {
+    return await httpSubmitSignUp(user);
+  }
+)
+
+export const userSignOut = createAsyncThunk(
+  'user/userSignOut',
+  async () => {
+    return await httpSignOutUser()
+  }
+)
+  
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   extraReducers: (builder) => {
-    // const {pending, fulfilled, rejected} = setCurrentUser;
     builder
-      .addCase(setCurrentUser.pending, (state) => {
+      .addCase(getCurrentUser.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(setCurrentUser.fulfilled, (state, action) => {
+      .addCase(getCurrentUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.currentUser = action.payload;
       })
-      .addCase(setCurrentUser.rejected, (state, action) => {
+      .addCase(getCurrentUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
-      .addCase(userSignIn.fulfilled, (state, action) => {
+      .addCase(userEmailSignIn.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(userEmailSignIn.fulfilled, (state, action) => {
+        state.isLoading = false;
         if (action.payload === undefined) alert('Invalid Username or Password')
         else if (action.payload.status === 200) window.location.assign('http://localhost:5173/')
+      })
+      .addCase(userEmailSignIn.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(userGoogleSignIn.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(userGoogleSignIn.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(userGoogleSignIn.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(userSignUp.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(userSignUp.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (action.payload.status === 201) window.location.reload();
+      })
+      .addCase(userSignUp.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(userSignOut.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(userSignOut.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (action.payload.status === 200) window.location.assign('http://localhost:5173/');      
+      })
+      .addCase(userSignOut.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       })
   }
 });
 
 export const userReducer = userSlice.reducer;
-
-
-
-
-
-
-
-// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-// import { httpGetUser, httpSubmitSignIn } from '../../api/serverAPI';
-
-// const initialState = {
-//   currentUser: null,
-//   isLoading: false,
-//   error: null,
-// };
-
-// // export const userSignIn = createAsyncThunk(
-// //   'user/userSignIn',
-// //   async (user) => {
-// //     const res = await httpSubmitSignIn(user);
-// //     const 
-// //   }
-// // )
-
-// export const setCurrentUser = createAsyncThunk(
-//   'user/setCurrentUser',
-//   async () => {
-//     const res = await httpGetUser();
-//     const user = res.data;
-//     return user;
-//   }
-// )
-
-// export const userSlice = createSlice({
-//   name: 'user',
-//   initialState,
-//   extraReducers: (builder) => {
-//     const {pending, fulfilled, rejected} = setCurrentUser;
-//     builder
-//       .addCase(pending, (state) => {
-//         state.isLoading = true;
-//       })
-//       .addCase(fulfilled, (state, action) => {
-//         state.isLoading = false;
-//         state.currentUser = action.payload;
-//       })
-//       .addCase(rejected, (state, action) => {
-//         state.isLoading = false;
-//         state.error = action.payload;
-//       })
-//   }
-// });
-
-// export const userReducer = userSlice.reducer;

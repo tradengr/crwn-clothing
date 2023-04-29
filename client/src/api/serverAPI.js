@@ -44,10 +44,9 @@ async function httpGetUser() {
 
 async function httpSignOutUser() {
   try {
-    const res = await axios.delete(`${API_URL}/signout`, {
+    return await axios.delete(`${API_URL}/signout`, {
       withCredentials: true
     });
-    if (res.status === 200) window.location.reload();
   } catch (err) {
     console.error(err);
   }

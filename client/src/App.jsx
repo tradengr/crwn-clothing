@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 
 import Spinner from './components/spinner/spinner.component'
 
-import { setCurrentUser } from './redux/user/user.slice'
+import { getCurrentUser } from './redux/user/user.slice'
 
 const Navbar = lazy(() => import('./routes/navbar/Navbar.component'));
 const Home = lazy(() => import('./routes/home/Home.component'));
@@ -14,9 +14,8 @@ const Checkout = lazy(() => import('./routes/checkout/Checkout.component'));
 
 function App() {
   const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(setCurrentUser());
+    dispatch(getCurrentUser());
   }, [])
 
   return(

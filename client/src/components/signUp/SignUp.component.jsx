@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux';
 
 import FormInput from '../formInput/FormInput.component.jsx';
 import { Button } from '../button/Button.component.jsx';
-import { httpSubmitSignUp } from '../../api/serverAPI.js';
+import { userSignUp } from '../../redux/user/user.slice.js';
 
 import './SignUp.styles.scss';
 
@@ -14,6 +15,7 @@ const defaultFormFields = {
 };
 
 export default function SignUp() {
+  const dispatch = useDispatch();
   const [ formFields, setFormFields ] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
   
@@ -24,20 +26,13 @@ export default function SignUp() {
 
   const handleSignUp = async (event) => {
     event.preventDefault();
-  
+
     if (password !== confirmPassword) {
       alert('Password does not match.');
       return;
-    } 
+    }
 
-    const user = {
-      displayName,
-      email,
-      password,
-    };
-
-    const res = await httpSubmitSignUp(user);
-    if (res.status === 201) window.location.reload();
+    dispatch(userSignUp(formFields));
   }
  
   return (
