@@ -3,7 +3,8 @@ import { useState } from 'react';
 import FormInput from '../formInput/FormInput.component';
 import { Button, GoogleButton } from '../button/Button.component';
 
-import { httpSubmitSignIn } from '../../api/serverAPI';
+import { userEmailSignIn, userGoogleSignIn } from '../../redux/user/user.slice';
+import { useDispatch } from 'react-redux';
 
 import './SignIn.styles.scss';
 
@@ -13,6 +14,7 @@ const defaultFormFields = {
 };
 
 export default function SignIn() {
+  const dispatch = useDispatch();
   const [ formFields, setFormFields ] = useState(defaultFormFields);
   const { email, password } = formFields;
 
@@ -23,22 +25,12 @@ export default function SignIn() {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
-
-    const user = { email, password };
-
-    const res = await httpSubmitSignIn(user);
-    if (res === undefined) {
-      alert('Invalid Username or Password')
-      return;
-    }
-    if (res.status === 200) window.location.assign('http://localhost:5173/');
+    dispatch(userEmailSignIn(formFields));
   }
 
   const handleGoogleSignin = () => {
-    window.open('http://localhost:3000/auth/google', '_self');
+    dispatch(userGoogleSignIn());
   }
-
-  
 
   return (
     <div className='signin-container'>

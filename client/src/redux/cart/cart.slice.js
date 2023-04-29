@@ -46,6 +46,9 @@ export const cartSlice = createSlice({
     },
     removeItemFromCart(state, action) {
       state.cartItems = removeCartItem(action.payload, state.cartItems);
+    },
+    clearCartItems(state) {
+      state.cartItems = [];
     }
   }
 });
@@ -56,4 +59,5 @@ export const {
   addItemToCart,
   reduceItemFromCart,
   removeItemFromCart,
+  clearCartItems,
 } = cartSlice.actions;
