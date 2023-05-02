@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom"
-import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import CartIcon from "../../components/cartIcon/CartIcon.component";
@@ -12,9 +12,12 @@ import { selectIsCartOpen } from "../../redux/cart/cart.selector";
 import './Navbar.styles.scss'
 
 export default function Navbar() {
-  const dispatch = useDispatch();
-  const currentUser = useSelector(selectCurrentUser);
-  const isCartOpen = useSelector(selectIsCartOpen);
+  // const dispatch = useDispatch();
+  // const currentUser = useSelector(selectCurrentUser);
+  // const isCartOpen = useSelector(selectIsCartOpen);
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector(selectCurrentUser);
+  const isCartOpen = useAppSelector(selectIsCartOpen);
 
   const handleSignOut = () => dispatch(userSignOut());
 
@@ -29,7 +32,7 @@ export default function Navbar() {
             SHOP
           </Link>
           {currentUser 
-            ? (<Link className="nav-link" onClick={handleSignOut}>SIGN OUT</Link>) 
+            ? (<span className="nav-link" onClick={handleSignOut}>SIGN OUT</span>) 
             : (<Link className="nav-link" to='/auth'>SIGN IN</Link>)
           }
           <CartIcon/>

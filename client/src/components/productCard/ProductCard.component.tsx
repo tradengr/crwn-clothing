@@ -3,11 +3,16 @@ import { useDispatch } from 'react-redux';
 import { InvertedButton } from '../button/Button.component';
 
 import { addItemToCart } from '../../redux/cart/cart.slice';
-import { selectCartItems } from '../../redux/cart/cart.selector';
 
 import './ProductCard.styles.scss';
 
-export default function ProductCard({ product }) {
+import type { CategoryItem } from '../../redux/categories/categories.slice';
+
+type ProductCardProps = {
+  product: CategoryItem;
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
   const { name, imageUrl, price } = product;
   const dispatch = useDispatch();
   

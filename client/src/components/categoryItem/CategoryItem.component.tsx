@@ -2,7 +2,13 @@ import { useNavigate } from 'react-router-dom';
 
 import './CategoryItem.styles.scss';
 
-export default function CategoryItem({ category }) {
+import type { CategoryHome } from '../categoryList/categoryList.component';
+
+type CategoryItemProps = {
+  category: CategoryHome;
+}
+
+export default function CategoryItem({ category }: CategoryItemProps) {
   const { title, imageUrl } = category;
   const navigate = useNavigate();
   const toCategory = () => navigate(`/shop/${title}`);

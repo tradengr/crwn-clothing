@@ -1,6 +1,6 @@
 import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useAppDispatch } from './redux/hooks'
 
 import Spinner from './components/spinner/spinner.component'
 
@@ -13,7 +13,7 @@ const Shop = lazy(() => import('./routes/shop/Shop.component'));
 const Checkout = lazy(() => import('./routes/checkout/Checkout.component'));
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getCurrentUser());
   }, [])

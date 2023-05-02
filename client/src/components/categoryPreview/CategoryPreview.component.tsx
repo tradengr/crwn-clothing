@@ -4,7 +4,14 @@ import ProductCard from '../productCard/ProductCard.component';
 
 import './CategoryPreview.styles.scss';
 
-export default function CategoryPreview({ category, products }) {
+import type { CategoryItem } from '../../redux/categories/categories.slice';
+
+type CategoryPreviewProps = {
+  category: string;
+  products: CategoryItem[];
+}
+
+export default function CategoryPreview({ category, products }: CategoryPreviewProps) {
   return (
     <div className='category-preview-container'>
       <h2>

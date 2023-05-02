@@ -34,7 +34,7 @@ export const getCategories = createAsyncThunk(
   'categories/getCategories',
   async () => {
     const res = await httpGetCategories();
-    const categories = res.data;
+    const categories = res && res.data;
     return categories;
   }
 );

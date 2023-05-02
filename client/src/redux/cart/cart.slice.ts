@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import type { CategoryItem } from '../categories/categories.slice';
 
-type CartItem = CategoryItem & {
+export type CartItem = CategoryItem & {
   quantity: number;
 }
 
@@ -50,13 +50,13 @@ export const cartSlice = createSlice({
     toggleCart(state, action: PayloadAction<boolean>) {
       state.isCartOpen = action.payload;
     },
-    addItemToCart(state, action: PayloadAction<CartItem>) {
+    addItemToCart(state, action: PayloadAction<CategoryItem>) {
       state.cartItems = addCartItem(action.payload, state.cartItems);
     },
-    reduceItemFromCart(state, action: PayloadAction<CartItem>) {
+    reduceItemFromCart(state, action: PayloadAction<CategoryItem>) {
       state.cartItems = reduceCartItem(action.payload, state.cartItems);
     },
-    removeItemFromCart(state, action: PayloadAction<CartItem>) {
+    removeItemFromCart(state, action: PayloadAction<CategoryItem>) {
       state.cartItems = removeCartItem(action.payload, state.cartItems);
     },
     clearCartItems(state) {

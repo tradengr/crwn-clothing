@@ -8,7 +8,7 @@ import { selectCartItems } from '../../redux/cart/cart.selector';
 
 import './CartDropdown.styles.scss';
 
-export default function CartDropdown() {
+const CartDropdown = () => {
   const cartItems = useSelector(selectCartItems);
   const navigate = useNavigate();
   const toCheckout = () => navigate('/checkout');
@@ -25,3 +25,5 @@ export default function CartDropdown() {
     </div>
   )
 }
+
+export default CartDropdown;

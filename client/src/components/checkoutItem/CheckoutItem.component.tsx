@@ -4,7 +4,13 @@ import { addItemToCart, reduceItemFromCart, removeItemFromCart } from '../../red
 
 import './CheckoutItem.styles.scss';
 
-export default function CheckoutItem({ item }) {
+import { CartItem } from '../../redux/cart/cart.slice';
+
+type CheckoutItemProps = {
+  item: CartItem;
+}
+
+export default function CheckoutItem({ item }: CheckoutItemProps) {
   const { imageUrl, name, quantity, price } = item;
   const disptach = useDispatch();
 

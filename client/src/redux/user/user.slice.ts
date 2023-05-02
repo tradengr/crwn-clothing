@@ -7,12 +7,21 @@ import {
   httpSignOutUser, 
 } from '../../api/serverAPI';
 
+export type UserSignIn = {
+  email: string;
+  password: string;
+}
+
+export type UserSignUp = UserSignIn & {
+  displayName: string;
+}
+
 type CurentUser = {
   displayName: string;
   email: string;
 }
 
-type UserState = {
+export type UserState = {
   currentUser: CurentUser | null;
   isLoading: boolean;
   error: Error | null | unknown;
@@ -28,14 +37,14 @@ export const getCurrentUser = createAsyncThunk(
   'user/getCurrentUser',
   async () => {
     const res = await httpGetUser();
-    const user = res.data;
+    const user = res && res.data;
     return user;
   }
 )
 
 export const userEmailSignIn = createAsyncThunk(
   'user/userEmailSignIn',
-  async (user) => {
+  async (user: UserSignIn) => {
     return await httpSubmitSignIn(user);
   }
 )
@@ -47,7 +56,7 @@ export const userGoogleSignIn = createAsyncThunk(
 
 export const userSignUp = createAsyncThunk(
   'user/userSignUp',
-  async (user) => {
+  async (user: UserSignUp) => {
     return await httpSubmitSignUp(user);
   }
 )
@@ -103,7 +112,7 @@ export const userSlice = createSlice({
       })
       .addCase(userSignUp.fulfilled, (state, action) => {
         state.isLoading = false;
-        if (action.payload.status === 201) window.location.reload();
+        if (action.payload && action.payload.status === 201) window.location.reload();
       })
       .addCase(userSignUp.rejected, (state, action) => {
         state.isLoading = false;
@@ -114,7 +123,7 @@ export const userSlice = createSlice({
       })
       .addCase(userSignOut.fulfilled, (state, action) => {
         state.isLoading = false;
-        if (action.payload.status === 200) window.location.assign('http://localhost:5173/');      
+        if (action.payload && action.payload.status === 200) window.location.assign('http://localhost:5173/');      
       })
       .addCase(userSignOut.rejected, (state, action) => {
         state.isLoading = false;

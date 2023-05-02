@@ -9,12 +9,16 @@ import { selectCategoriesObj, selectCategoriesIsLoading } from "../../redux/cate
 
 import './Category.styles.scss';
 
+type CategoryRouteParams = {
+  category: string;
+}
+
 export default function Category() {
-  const { category } = useParams();
+  const { category } = useParams<keyof CategoryRouteParams>() as CategoryRouteParams;
   const categoriesObj = useSelector(selectCategoriesObj);
   const categoriesIsLoading = useSelector(selectCategoriesIsLoading);
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(categoriesObj[category]);
   useEffect(() => {
     setProducts(categoriesObj[category]);
   },[category, categoriesObj])
