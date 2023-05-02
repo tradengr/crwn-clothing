@@ -2,7 +2,13 @@ import { memo } from 'react';
 
 import './CartItem.styles.scss';
 
-const CartItem = memo(({ item }) => {
+import type { CartItem } from '../../redux/cart/cart.slice';
+
+type CartItemProps = {
+  item: CartItem;
+}
+
+const CartItem = memo(({ item }: CartItemProps) => {
   const { name, quantity, imageUrl, price } = item;
 
   return (

@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+import { UserSignIn, UserSignUp } from '../redux/user/user.slice';
+import { StripePaymentParameter } from '../components/paymentForm/PaymentForm.component';
+
 const API_URL = 'http://localhost:3000';
 
 async function httpGetCategories() {
@@ -12,7 +15,7 @@ async function httpGetCategories() {
   }
 }
 
-async function httpSubmitSignUp(user) {
+async function httpSubmitSignUp(user: UserSignUp) {
   try {
     return await axios.post(`${API_URL}/signup`, user, {
       withCredentials: true
@@ -22,7 +25,7 @@ async function httpSubmitSignUp(user) {
   }
 }
 
-async function httpSubmitSignIn(user) {
+async function httpSubmitSignIn(user: UserSignIn) {
   try {
     return await axios.post(`${API_URL}/auth/signin`, user, {
       withCredentials: true
@@ -52,7 +55,7 @@ async function httpSignOutUser() {
   }
 }
 
-async function httpPostStripePayment(amount) {
+async function httpPostStripePayment(amount: StripePaymentParameter) {
   try {
     return await axios.post(`${API_URL}/stripe-payment`, amount, { 
       withCredentials: true 

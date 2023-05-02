@@ -1,7 +1,13 @@
 import CategoryItem from '../categoryItem/CategoryItem.component'
 import './categoryList.styles.scss'
 
-const categories = [
+export type CategoryHome = {
+  id: number;
+  title: string;
+  imageUrl: string;
+}
+
+const categoriesHome: CategoryHome[] = [
   {
     "id": 1,
     "title": "hats",
@@ -32,7 +38,7 @@ const categories = [
 export default function CategoryList() {
   return (
     <div className="categories-container">
-      {categories.map(category => {
+      {categoriesHome.map(category => {
         return (
           <CategoryItem key={category.id} category={category} />
         )

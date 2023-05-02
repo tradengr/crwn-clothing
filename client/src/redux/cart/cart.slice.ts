@@ -1,7 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import type { CategoryItem } from '../categories/categories.slice';
+
+export type CartItem = CategoryItem & {
+  quantity: number;
+}
+
+export type CartState = {
+  isCartOpen: boolean;
+  cartItems: CartItem[];
+}
 
 // Helper functions ----------------------------------------
-const addCartItem = (product, cartItems) => {
+const addCartItem = (product: CategoryItem , cartItems: CartItem[]): CartItem[] => {
   const newCartItems = [...cartItems];
   const existingCartItem = newCartItems.find(item => item.id === product.id);  
   if (existingCartItem) {
@@ -11,40 +22,41 @@ const addCartItem = (product, cartItems) => {
   return newCartItems.concat([{...product, quantity: 1}]);
 }
 
-const reduceCartItem = (product, cartItems) => {
+const reduceCartItem = (product: CategoryItem, cartItems: CartItem[]): CartItem[] => {
   const newCartItems = [...cartItems];
-  const selectedItem = newCartItems.find(item => item.id === product.id);
-  if (selectedItem.quantity === 1) 
+  const existingCartItem = newCartItems.find(item => item.id === product.id);
+  if (existingCartItem && existingCartItem.quantity === 1) 
     return removeCartItem(product, cartItems);
-  selectedItem.quantity--;
-  return newCartItems;
+  if (existingCartItem)
+    existingCartItem.quantity--;
+    return newCartItems;
 }
 
-const removeCartItem = (product, cartItems) => {
+const removeCartItem = (product: CategoryItem, cartItems: CartItem[]): CartItem[] => {
   const newCartItems = [...cartItems];
   return newCartItems.filter(item => item.id !== product.id);
 }
 // ---------------------------------------------------------
 
-const INITIAL_STATE = {
+const initialState: CartState = {
   isCartOpen: false,
   cartItems: [],
 };
 
 export const cartSlice = createSlice({
   name: 'cart',
-  initialState: INITIAL_STATE,
+  initialState,
   reducers: {
-    toggleCart(state, action) {
+    toggleCart(state, action: PayloadAction<boolean>) {
       state.isCartOpen = action.payload;
     },
-    addItemToCart(state, action) {
+    addItemToCart(state, action: PayloadAction<CategoryItem>) {
       state.cartItems = addCartItem(action.payload, state.cartItems);
     },
-    reduceItemFromCart(state, action) {
+    reduceItemFromCart(state, action: PayloadAction<CategoryItem>) {
       state.cartItems = reduceCartItem(action.payload, state.cartItems);
     },
-    removeItemFromCart(state, action) {
+    removeItemFromCart(state, action: PayloadAction<CategoryItem>) {
       state.cartItems = removeCartItem(action.payload, state.cartItems);
     },
     clearCartItems(state) {

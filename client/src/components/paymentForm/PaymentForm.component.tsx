@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
@@ -11,6 +11,10 @@ import { clearCartItems } from '../../redux/cart/cart.slice';
 
 import './PaymentForm.styles.scss';
 
+export type StripePaymentParameter = {
+  amount: number;
+}
+
 export default function PaymentForm() {
   const dispatch = useDispatch();
   const stripe = useStripe();
@@ -19,7 +23,7 @@ export default function PaymentForm() {
   const currentUser = useSelector(selectCurrentUser);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
-  const paymentHandler = async (event) => {
+  const paymentHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!stripe || !elements) return;
@@ -27,11 +31,13 @@ export default function PaymentForm() {
     setIsProcessingPayment(true);
 
     const res = await httpPostStripePayment({amount: cartTotal * 100});
-    const clientSecret = res.data.client_secret;
+    const clientSecret =  res && res.data.client_secret;
+    const cardDetails = elements.getElement(CardElement);
+    if (cardDetails === null) return;
 
     const paymentResult = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
-        card: elements.getElement(CardElement),
+        card: cardDetails,
         billing_details: {
           name: currentUser ? currentUser.displayName : 'Guest'
         }

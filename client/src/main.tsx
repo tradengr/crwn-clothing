@@ -5,16 +5,16 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Elements } from '@stripe/react-stripe-js';
 
-import { store } from './redux/store.js';
+import { store } from './redux/store';
 import { persistor } from './redux/store';
-import { stripePromise } from './utils/stripe.js';
+import { stripePromise } from './utils/stripe';
 
-import App from './App.jsx'
-import Spinner from './components/spinner/spinner.component.jsx';
+import App from './App.js'
+import Spinner from './components/spinner/spinner.component';
 
 import './index.scss'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={<Spinner/>} persistor={persistor}>

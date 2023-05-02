@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
 
 import FormInput from '../formInput/FormInput.component';
 import { Button, GoogleButton } from '../button/Button.component';
 
 import { userEmailSignIn, userGoogleSignIn } from '../../redux/user/user.slice';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../redux/hooks';
 
 import './SignIn.styles.scss';
 
@@ -14,16 +14,16 @@ const defaultFormFields = {
 };
 
 export default function SignIn() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [ formFields, setFormFields ] = useState(defaultFormFields);
   const { email, password } = formFields;
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormFields({...formFields, [name]: value});
   }
 
-  const handleSignIn = async (event) => {
+  const handleSignIn = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(userEmailSignIn(formFields));
   }
